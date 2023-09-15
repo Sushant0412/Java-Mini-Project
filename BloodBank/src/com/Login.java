@@ -98,7 +98,7 @@ public class Login extends main implements ActionListener{
 			        String userText = username.getText(); // Retrieve the entered username
 			        String pwdText = passwordField.getText(); // Retrieve the entered password
 
-			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
+			        if (userText.equals("admin") && pwdText.equals("12345")) {
 			            //JOptionPane.showMessageDialog(null, "Login Successful");
 			            Home launch = new Home();
 			            launch.setVisible(true);
