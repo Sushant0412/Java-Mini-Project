@@ -106,7 +106,7 @@ public class Login extends main implements ActionListener{
 			        } else if(userText.equals("") || pwdText.equals("")){
 			        	JOptionPane.showMessageDialog(null, "Please Enter username and password");
 			        	username.setText("");
-			            passwordField.setText("");
+			                passwordField.setText("");
 			        }
 			        else {
 			            JOptionPane.showMessageDialog(null, "Invalid Username or Password");
@@ -133,11 +133,5 @@ public class Login extends main implements ActionListener{
 		txtBloodbankManagementSystem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtBloodbankManagementSystem.setText("Blood Bank Management System");
 		txtBloodbankManagementSystem.setColumns(10);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
