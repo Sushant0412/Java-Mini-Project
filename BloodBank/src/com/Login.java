@@ -1,30 +1,26 @@
 package com;
 
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.TextField;
-import javax.swing.JTextArea;
-import javax.swing.JPasswordField;
-import javax.swing.JLabel;
-import java.awt.Color;
+import javax.swing.*;
 import java.io.*;
+import java.sql.*;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import javax.swing.JButton;
-import javax.swing.border.EtchedBorder;
-import javax.swing.JLayeredPane;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.*;
+import java.sql.*;
 
-public class Login {
 
-	private JFrame frame;
-	private JPasswordField passwordField;
+public class Login extends main implements ActionListener{
 
+	public JFrame frame;
+	public JPasswordField passwordField;
+	private JButton btnNewButton;
+	private JLabel lblNewLabel_1;
+	private JTextField txtBloodbankManagementSystem;
+
+	
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +40,7 @@ public class Login {
 	/**
 	 * Create the application.
 	 */
-	public Login() {
+	public Login(){
 		initialize();
 	}
 	
@@ -53,55 +49,95 @@ public class Login {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	
+	
+	private void initialize()  {
 		  
      
+		
+		
 		frame = new JFrame();
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
-		frame.getContentPane().setBackground(Color.RED);
+		frame.getContentPane().setBackground(new Color(255, 0, 0));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("BloodBank Management System");
-		lblNewLabel_2.setForeground(new Color(255, 255, 0));
-		lblNewLabel_2.setBounds(250, 10, 278, 52);
-		lblNewLabel_2.setFont(new Font("Serif", Font.BOLD, 20));
-		frame.getContentPane().add(lblNewLabel_2);
-		
 		JPanel panel = new JPanel();
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.BLACK, new Color(0, 0, 0), Color.BLACK, Color.BLACK));
-		panel.setBounds(540, 129, 203, 273);
+		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panel.setBounds(540, 122, 203, 280);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JTextArea txtrEnter = new JTextArea();
-		txtrEnter.setBounds(22, 39, 102, 22);
-		panel.add(txtrEnter);
+		JTextArea username = new JTextArea();
+		username.setBounds(22, 39, 118, 22);
+		panel.add(username);
 		
 		
-		JLabel lblNewLabel_1 = new JLabel("UserName");
-		lblNewLabel_1.setBounds(22, 10, 69, 19);
-		panel.add(lblNewLabel_1);
-		lblNewLabel_1.setForeground(new Color(0, 0, 0));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel usernameLabel = new JLabel("UserName");
+		usernameLabel.setBounds(22, 10, 80, 19);
+		panel.add(usernameLabel);
+		usernameLabel.setForeground(new Color(0, 0, 0));
+		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JLabel lblNewLabel = new JLabel("Password");
-		lblNewLabel.setBounds(22, 82, 80, 26);
-		panel.add(lblNewLabel);
-		lblNewLabel.setForeground(new Color(0, 0, 0));
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel passLabel = new JLabel("Password");
+		passLabel.setBounds(22, 82, 80, 26);
+		panel.add(passLabel);
+		passLabel.setForeground(new Color(0, 0, 0));
+		passLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(22, 128, 118, 26);
+		passwordField.setBounds(22, 118, 118, 26);
 		panel.add(passwordField);
 		
-		JButton btnNewButton = new JButton("LOGIN");
-		btnNewButton.setBounds(22, 185, 85, 21);
-		panel.add(btnNewButton);
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.setForeground(new Color(0, 0, 0));
-		btnNewButton.setBackground(new Color(255, 255, 0));
+		JButton loginbtn = new JButton("LOGIN");
+		loginbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    if (e.getSource() == loginbtn) {
+			        String userText = username.getText(); // Retrieve the entered username
+			        String pwdText = passwordField.getText(); // Retrieve the entered password
+
+			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
+			            //JOptionPane.showMessageDialog(null, "Login Successful");
+			            Home launch = new Home();
+			            launch.setVisible(true);
+			            frame.setVisible(false);
+			        } else if(userText.equals("") || pwdText.equals("")){
+			        	JOptionPane.showMessageDialog(null, "Please Enter username and password");
+			        	username.setText("");
+			            passwordField.setText("");
+			        }
+			        else {
+			            JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+			            username.setText("");
+			            passwordField.setText("");
+			        }
+			    }
+			}
+
+		});
+		loginbtn.setActionCommand("Home");
+		loginbtn.setBounds(22, 174, 103, 35);
+		panel.add(loginbtn);
+		loginbtn.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		loginbtn.setForeground(new Color(0, 0, 0));
+		loginbtn.setBackground(new Color(255, 255, 0));
+		
+		txtBloodbankManagementSystem = new JTextField();
+		txtBloodbankManagementSystem.setBorder(new CompoundBorder());
+		txtBloodbankManagementSystem.setBackground(new Color(255, 0, 0));
+		txtBloodbankManagementSystem.setBounds(264, 30, 272, 49);
+		frame.getContentPane().add(txtBloodbankManagementSystem);
+		txtBloodbankManagementSystem.setForeground(new Color(255, 255, 0));
+		txtBloodbankManagementSystem.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtBloodbankManagementSystem.setText("Blood Bank Management System");
+		txtBloodbankManagementSystem.setColumns(10);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
