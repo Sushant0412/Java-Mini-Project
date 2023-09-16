@@ -12,7 +12,7 @@ import javax.swing.border.*;
 import java.sql.*;
 
 
-public class Login extends main implements ActionListener{
+public class Login implements ActionListener{
 
 	public JFrame frame;
 	public JPasswordField passwordField;
@@ -40,11 +40,9 @@ public class Login extends main implements ActionListener{
 	/**
 	 * Create the application.
 	 */
-	public Login(){
+	public Login() {
 		initialize();
 	}
-	
-	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -53,10 +51,9 @@ public class Login extends main implements ActionListener{
 	
 	private void initialize()  {
 		  
-     
-		
 		
 		frame = new JFrame();
+		frame.setTitle("Login Page");
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.getContentPane().setBackground(new Color(255, 0, 0));
 		frame.setBounds(100, 100, 800, 600);
@@ -95,10 +92,13 @@ public class Login extends main implements ActionListener{
 		loginbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    if (e.getSource() == loginbtn) {
+			    	//Home launch = new Home();
+		            //launch.setVisible(true);
+		            //frame.setVisible(false);
 			        String userText = username.getText(); // Retrieve the entered username
 			        String pwdText = passwordField.getText(); // Retrieve the entered password
 
-			        if (userText.equals("admin") && pwdText.equals("12345")) {
+			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
 			            //JOptionPane.showMessageDialog(null, "Login Successful");
 			            Home launch = new Home();
 			            launch.setVisible(true);
@@ -106,7 +106,7 @@ public class Login extends main implements ActionListener{
 			        } else if(userText.equals("") || pwdText.equals("")){
 			        	JOptionPane.showMessageDialog(null, "Please Enter username and password");
 			        	username.setText("");
-			                passwordField.setText("");
+			            passwordField.setText("");
 			        }
 			        else {
 			            JOptionPane.showMessageDialog(null, "Invalid Username or Password");
@@ -133,5 +133,17 @@ public class Login extends main implements ActionListener{
 		txtBloodbankManagementSystem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtBloodbankManagementSystem.setText("Blood Bank Management System");
 		txtBloodbankManagementSystem.setColumns(10);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		frame.setVisible(true);
+		
 	}
 }
