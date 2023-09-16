@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 
 public class Home extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -56,10 +60,20 @@ public class Home extends JFrame {
 		btnDonate.setBounds(505, 10, 113, 64);
 		panel.add(btnDonate);
 		
-		JButton btnNewButton_2 = new JButton("Logout");
-		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton_2.setBounds(628, 10, 113, 64);
-		panel.add(btnNewButton_2);
+		JButton logOut = new JButton("Logout");
+		logOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == logOut)
+				{
+					dispose(); // Close the current Home frame	
+		            Login loginPage = new Login();
+		            loginPage.setVisible(true);
+				}
+			}
+		});
+		logOut.setFont(new Font("Tahoma", Font.BOLD, 12));
+		logOut.setBounds(628, 10, 113, 64);
+		panel.add(logOut);
 		
 		JButton btnAboutUs = new JButton("About Us");
 		btnAboutUs.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -76,5 +90,11 @@ public class Home extends JFrame {
 		Image scaledImage = originalImage.getScaledInstance(80, 64, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 		logo.setIcon(scaledIcon);
+	}
+
+	protected void loginSrc() {
+		// TODO Auto-generated method stub
+		new Login();
+		
 	}
 }
