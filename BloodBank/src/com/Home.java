@@ -1,10 +1,18 @@
 package com;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class Home extends JFrame {
 
@@ -51,11 +59,27 @@ public class Home extends JFrame {
 		panel.setLayout(null);
 		
 		JButton btnFind = new JButton("Looking For Blood");
+		btnFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == btnFind) {
+					Search find = new Search();
+					find.setVisible(true);
+				}
+			}
+		});
 		btnFind.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnFind.setBounds(363, 10, 132, 64);
 		panel.add(btnFind);
 		
 		JButton btnDonate = new JButton("Donate Blood");
+		btnDonate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == btnDonate) {
+					Donate donate = new Donate();
+					donate.setVisible(true);
+				}
+			}
+		});
 		btnDonate.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnDonate.setBounds(505, 10, 113, 64);
 		panel.add(btnDonate);
@@ -80,7 +104,7 @@ public class Home extends JFrame {
 		btnAboutUs.setBounds(240, 10, 113, 64);
 		panel.add(btnAboutUs);
 		
-		JLabel logo = new JLabel("");
+		/*JLabel logo = new JLabel("");
 		logo.setBounds(10, 10, 80, 64);
 		panel.add(logo);
 		logo.setForeground(new Color(255, 255, 255));
@@ -89,7 +113,7 @@ public class Home extends JFrame {
 		Image originalImage = img1.getImage();
 		Image scaledImage = originalImage.getScaledInstance(80, 64, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
-		logo.setIcon(scaledIcon);
+		logo.setIcon(scaledIcon);*/
 	}
 
 	protected void loginSrc() {
