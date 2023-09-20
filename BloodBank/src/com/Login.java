@@ -1,23 +1,27 @@
 package com;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.border.*;
-import java.sql.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 
 public class Login implements ActionListener{
 
 	public JFrame frame;
 	public JPasswordField passwordField;
-	private JButton btnNewButton;
-	private JLabel lblNewLabel_1;
 	private JTextField txtBloodbankManagementSystem;
 
 	
@@ -96,7 +100,8 @@ public class Login implements ActionListener{
 		            //launch.setVisible(true);
 		            //frame.setVisible(false);
 			        String userText = username.getText(); // Retrieve the entered username
-			        String pwdText = passwordField.getText(); // Retrieve the entered password
+			        @SuppressWarnings("deprecation")
+					String pwdText = passwordField.getText(); // Retrieve the entered password
 
 			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
 			            //JOptionPane.showMessageDialog(null, "Login Successful");
