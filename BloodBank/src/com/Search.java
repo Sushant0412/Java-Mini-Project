@@ -31,7 +31,7 @@ public class Search extends JFrame {
 
     public Search() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
+        setBounds(100, 100, 1100, 600);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(128, 128, 128));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -40,7 +40,7 @@ public class Search extends JFrame {
         contentPane.setLayout(null);
 
         JPanel panel = new JPanel();
-        panel.setBounds(10, 10, 766, 543);
+        panel.setBounds(10, 10, 1066, 543);
         panel.setBackground(new Color(255, 0, 0));
         panel.setForeground(new Color(255, 255, 255));
         contentPane.add(panel);
@@ -78,8 +78,10 @@ public class Search extends JFrame {
 
         JTextArea stockOutput = new JTextArea();
         stockOutput.setFont(new Font("Tahoma", Font.BOLD, 15));
-        stockOutput.setText("\t         Available Donors: ");
-        stockOutput.setBounds(252, 158, 476, 345);
+        stockOutput.setText("\t\t               Available Donors: \r\n");
+        stockOutput.append("\n        ID      |    Name     |   Blood Type   |    City\n");
+        stockOutput.append("    ----------------------------------------------------------\n");
+        stockOutput.setBounds(252, 158, 764, 345);
         panel.add(stockOutput);
 
         JButton btnNewButton = new JButton("Enter");
@@ -97,9 +99,9 @@ public class Search extends JFrame {
                         return;
                     }
 
-                    Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/search", "root", "root");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/donatebld", "root", "root");
 
-                    String query = "SELECT * FROM blood WHERE city = ? AND blood_type = ?";
+                    String query = "SELECT * FROM donorlist WHERE Address = ? AND BloodType = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setString(1, selectedCity);
                     preparedStatement.setString(2, selectedBloodType);
@@ -107,22 +109,37 @@ public class Search extends JFrame {
                     ResultSet resultSet = preparedStatement.executeQuery();
 
                     StringBuilder table = new StringBuilder();
-                    table.append("\n                 City            |       ID        |     Blood Type\n");
-                    table.append("         ----------------------------------------------------------\n");
+                    table.append("\n        ID      |         Name         |   Blood Type   |    City\n");
+                    table.append("    ----------------------------------------------------------\n");
+
+                    boolean foundEntries = false;
 
                     while (resultSet.next()) {
-                        String city = resultSet.getString("city");
+                        String city = resultSet.getString("Address");
                         String id = resultSet.getString("id");
-                        String bloodType = resultSet.getString("blood_type");
+                        String bloodType = resultSet.getString("BloodType");
+                        String name = resultSet.getString("Name");
 
-                        table.append("                 ").append(city).append("          |        ").append(id).append("         |         ").append(bloodType).append("\n");
+                        table.append("         ").append(id).append("       |    ").append(name).append("    |         ").append(bloodType).append("          |    ").append(city).append("\n");
+                        foundEntries = true;
                     }
 
                     resultSet.close();
                     preparedStatement.close();
                     connection.close();
 
-                    stockOutput.setText("\t         Available Donors: \n" + table.toString());
+                    if (!foundEntries) {
+                        // No entries found, display a pop-up message
+                        JOptionPane.showMessageDialog(contentPane, "No entries found for the selected blood type.", "No Entries Found", JOptionPane.INFORMATION_MESSAGE);
+                        stockOutput.setText("\t         Available Donors: \n");
+                        stockOutput.append("\n        ID      |    Name     |   Blood Type   |    City\n");
+                        stockOutput.append("         ----------------------------------------------------------\n");
+                        cityChoice.select(0);
+                        bloodTypeChoice.select(0);
+                    } else {
+                        // Entries found, display the results in the JTextArea
+                        stockOutput.setText("\t\t               Available Donors: \r\n" + table.toString());
+                    }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -134,7 +151,7 @@ public class Search extends JFrame {
         panel.add(btnNewButton);
 
         title = new JTextField();
-        title.setBounds(10, 10, 553, 62);
+        title.setBounds(252, 10, 553, 62);
         panel.add(title);
         title.setFont(new Font("Tahoma", Font.BOLD, 15));
         title.setHorizontalAlignment(SwingConstants.CENTER);
