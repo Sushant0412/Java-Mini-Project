@@ -1,28 +1,14 @@
 package com;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.event.*;
 
 public class Login implements ActionListener{
 
 	public JFrame frame;
 	public JPasswordField passwordField;
-	private JTextField txtBloodbankManagementSystem;
 
 	
 	/**
@@ -59,7 +45,7 @@ public class Login implements ActionListener{
 		frame = new JFrame();
 		frame.setTitle("Login Page");
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
-		frame.getContentPane().setBackground(new Color(255, 0, 0));
+		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -75,6 +61,16 @@ public class Login implements ActionListener{
 		username.setBounds(22, 39, 118, 22);
 		panel.add(username);
 		
+		ImageIcon backgroundImage = new ImageIcon("images/loginBg.jpg"); // Replace with your image path
+		JLabel backgroundLabel = new JLabel(backgroundImage);
+		backgroundLabel.setBounds(0, 0, 786, 563); // Set the size to match your frame size
+		frame.getContentPane().add(backgroundLabel);
+
+		JLabel titleLabel = new JLabel("Blood Bank Management System");
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(0, 0, 0)); // Set the text color
+        titleLabel.setBounds(50, 50, 500, 40); // Adjust position and size as needed
+        backgroundLabel.add(titleLabel); // Add to the background label
 		
 		JLabel usernameLabel = new JLabel("UserName");
 		usernameLabel.setBounds(22, 10, 80, 19);
@@ -128,16 +124,6 @@ public class Login implements ActionListener{
 		loginbtn.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		loginbtn.setForeground(new Color(0, 0, 0));
 		loginbtn.setBackground(new Color(255, 255, 0));
-		
-		txtBloodbankManagementSystem = new JTextField();
-		txtBloodbankManagementSystem.setBorder(new CompoundBorder());
-		txtBloodbankManagementSystem.setBackground(new Color(255, 0, 0));
-		txtBloodbankManagementSystem.setBounds(264, 30, 272, 49);
-		frame.getContentPane().add(txtBloodbankManagementSystem);
-		txtBloodbankManagementSystem.setForeground(new Color(255, 255, 0));
-		txtBloodbankManagementSystem.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtBloodbankManagementSystem.setText("Blood Bank Management System");
-		txtBloodbankManagementSystem.setColumns(10);
 	}
 
 	@Override
