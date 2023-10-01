@@ -100,11 +100,20 @@ public class Home extends JFrame {
 		panel.add(logOut);
 		
 		JButton btnAboutUs = new JButton("About Us");
+		btnAboutUs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == btnAboutUs)
+				{
+					AboutUs aboutUsFrame = new AboutUs();
+                    aboutUsFrame.setVisible(true);
+				}
+			}
+		});
 		btnAboutUs.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnAboutUs.setBounds(240, 10, 113, 64);
 		panel.add(btnAboutUs);
 		
-		/*JLabel logo = new JLabel("");
+		JLabel logo = new JLabel("");
 		logo.setBounds(10, 10, 80, 64);
 		panel.add(logo);
 		logo.setForeground(new Color(255, 255, 255));
@@ -113,7 +122,7 @@ public class Home extends JFrame {
 		Image originalImage = img1.getImage();
 		Image scaledImage = originalImage.getScaledInstance(80, 64, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
-		logo.setIcon(scaledIcon);*/
+		logo.setIcon(scaledIcon);
 	}
 
 	protected void loginSrc() {
