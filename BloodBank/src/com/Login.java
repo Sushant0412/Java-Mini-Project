@@ -1,5 +1,6 @@
 package com;
 
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -58,11 +59,13 @@ public class Login implements ActionListener{
 		panel.setLayout(null);
 		
 		JTextArea username = new JTextArea();
+		username.setBorder(null);
 		username.setBounds(22, 39, 118, 22);
 		panel.add(username);
 		
 		ImageIcon backgroundImage = new ImageIcon("images/loginBg.jpg"); // Replace with your image path
 		JLabel backgroundLabel = new JLabel(backgroundImage);
+		backgroundLabel.setBorder(null);
 		backgroundLabel.setBounds(0, 0, 786, 563); // Set the size to match your frame size
 		frame.getContentPane().add(backgroundLabel);
 
@@ -85,6 +88,7 @@ public class Login implements ActionListener{
 		passLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		passwordField = new JPasswordField();
+		passwordField.setBorder(null);
 		passwordField.setBounds(22, 118, 118, 26);
 		panel.add(passwordField);
 		
