@@ -1,18 +1,10 @@
 package com;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
 
 public class Home extends JFrame {
 
@@ -43,6 +35,7 @@ public class Home extends JFrame {
 	 */
 	public Home()
 	{
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -50,15 +43,19 @@ public class Home extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+        // Set the content pane as non-opaque to allow the background image to be visible
+        
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 0, 0));
+		panel.setBackground(new Color(255, 128, 64));
 		panel.setBorder(new EmptyBorder(0, 3, 0, 0));
 		panel.setBounds(10, 10, 766, 84);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JButton btnFind = new JButton("Looking For Blood");
+		btnFind.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		btnFind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnFind) {
@@ -72,6 +69,7 @@ public class Home extends JFrame {
 		panel.add(btnFind);
 		
 		JButton btnDonate = new JButton("Donate Blood");
+		btnDonate.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		btnDonate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnDonate) {
@@ -85,6 +83,7 @@ public class Home extends JFrame {
 		panel.add(btnDonate);
 		
 		JButton logOut = new JButton("Logout");
+		logOut.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		logOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == logOut)
@@ -100,6 +99,7 @@ public class Home extends JFrame {
 		panel.add(logOut);
 		
 		JButton btnAboutUs = new JButton("About Us");
+		btnAboutUs.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		btnAboutUs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnAboutUs)
@@ -123,6 +123,8 @@ public class Home extends JFrame {
 		Image scaledImage = originalImage.getScaledInstance(80, 64, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 		logo.setIcon(scaledIcon);
+
+		
 	}
 
 	protected void loginSrc() {
