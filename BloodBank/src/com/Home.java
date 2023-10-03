@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.table.DefaultTableModel;
+//import javax.swing.table.*;
 
 public class Home extends JFrame {
 
@@ -104,6 +104,7 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnAboutUs)
 				{
+					dispose();
 					AboutUs aboutUsFrame = new AboutUs();
                     aboutUsFrame.setVisible(true);
 				}
