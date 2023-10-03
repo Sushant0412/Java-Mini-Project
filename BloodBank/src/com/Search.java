@@ -59,6 +59,8 @@ public class Search extends JFrame {
             }
         }
 
+        
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 1200, 600);
         contentPane = new JPanel();
@@ -105,18 +107,26 @@ public class Search extends JFrame {
         tableModel.addColumn("Blood Type");
         tableModel.addColumn("Address");
         tableModel.addColumn("Contact");
+       
 
         JTable jTable = new JTable(tableModel) {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Make all cells non-editable
                 return false;
             }
         };
+        
+        
 
-        TableColumn addressColumn = jTable.getColumnModel().getColumn(3); // Replace 3 with the actual column index of
-                                                                          // the "Address" column
+        // Set the custom cell renderer for the "Address" column
+        TableColumn addressColumn = jTable.getColumnModel().getColumn(3); // Replace 3 with the actual column index of the "Address" column
         addressColumn.setCellRenderer(new AddressCellRenderer());
+
+        
+
         jTable.setFont(new Font("Tahoma", Font.BOLD, 15));
         addressColumn.setPreferredWidth(200); // Adjust the width as needed
         jTable.setRowHeight(60);
@@ -133,22 +143,6 @@ public class Search extends JFrame {
         txtEnterCity.setText("Enter City:");
         panel.add(txtEnterCity);
         txtEnterCity.setColumns(10);
-        /*
-         * JTextArea stockOutput = new JTextArea();
-         * stockOutput.setFont(new Font("Tahoma", Font.BOLD, 15));
-         * stockOutput.
-         * setText("                                            Available Donors: \r\n"
-         * );
-         * stockOutput.
-         * append("\n        ID      |    Name     |   Blood Type   |    Address\n");
-         * stockOutput.
-         * append("    ----------------------------------------------------------\n");
-         * 
-         * // Create a JScrollPane and add the JTextArea to it
-         * JScrollPane scrollPane = new JScrollPane(stockOutput);
-         * scrollPane.setBounds(252, 158, 504, 345);
-         * panel.add(scrollPane); // Add the JScrollPane to your panel
-         */
 
         JButton btnNewButton = new JButton("Enter");
         btnNewButton.setBounds(70, 282, 85, 21);
@@ -182,6 +176,8 @@ public class Search extends JFrame {
                     table.append("    ----------------------------------------------------------\n");
 
                     boolean foundEntries = false;
+                    
+                    tableModel.setRowCount(0);
 
                     while (resultSet.next()) {
                         String address = resultSet.getString("Address");
@@ -189,18 +185,20 @@ public class Search extends JFrame {
                         String bloodType = resultSet.getString("BloodType");
                         String name = resultSet.getString("Name");
                         String contact = resultSet.getString("Contact");
-
+   
+                        
                         // table.append(" ").append(id).append(" | ").append(name);
                         // table.append(" | ").append(bloodType).append(" |
                         // ").append(address).append("\n");
 
-                        tableModel.addRow(new Object[] { id, name, bloodType, address, contact });
+                        tableModel.addRow(new Object[] { id, name, bloodType, address, contact});
 
                         // table.append("\n");
                         foundEntries = true;
 
                     }
 
+                    
                     resultSet.close();
                     preparedStatement.close();
                     connection.close();
@@ -219,11 +217,19 @@ public class Search extends JFrame {
                       // Entries found, display the results in the JTextArea
                       // stockOutput.setText(" Available Donors: \r\n" + table.toString());
                       // }
+                    
+                    
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+                
+                
             }
+            
+            
         });
+        
+       
 
         btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.add(btnNewButton);
@@ -258,6 +264,5 @@ public class Search extends JFrame {
         txtBloodType.setBorder(new CompoundBorder());
         txtBloodType.setBackground(Color.RED);
         panel.add(txtBloodType);
-
     }
 }
