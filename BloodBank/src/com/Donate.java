@@ -20,7 +20,7 @@ public class Donate extends JFrame {
 
     // Database connection variables
     private Connection connection = null;
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/donatebld";
+    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/bloodbank";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
 
@@ -46,8 +46,6 @@ public class Donate extends JFrame {
         getContentPane().setBounds(new Rectangle(0, 0, 800, 600));
         getContentPane().setLayout(null);
 
-
-        
         JPanel enterDetail = new JPanel();
         enterDetail.setBackground(new Color(192, 192, 192)); // 0 for fully transparent
         enterDetail.setBounds(40, 108, 276, 402);
@@ -157,7 +155,7 @@ public class Donate extends JFrame {
                         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
                         // Create an SQL DELETE statement
-                        String deleteSql = "DELETE FROM donorlist WHERE Name = ? AND BloodType = ?";
+                        String deleteSql = "DELETE FROM donor WHERE donor_name = ? AND blood_Type = ?";
 
                         // Prepare the SQL statement
                         PreparedStatement deleteStatement = connection.prepareStatement(deleteSql);
@@ -193,12 +191,12 @@ public class Donate extends JFrame {
         
         JPanel panel = new JPanel();
         panel.setBackground(new Color(255, 0, 0));
-        panel.setBounds(40, 10, 718, 54);
+        panel.setBounds(138, 10, 620, 54);
         getContentPane().add(panel);
         panel.setLayout(null);
         
         JLabel lblNewLabel = new JLabel("Provide Donor Details");
-        lblNewLabel.setBounds(158, 5, 394, 39);
+        lblNewLabel.setBounds(10, 5, 627, 39);
         panel.add(lblNewLabel);
         lblNewLabel.setBackground(new Color(255, 255, 255));
         lblNewLabel.setForeground(new Color(255, 255, 255));
@@ -215,6 +213,18 @@ public class Donate extends JFrame {
         JLabel quoteImageLabel = new JLabel(new ImageIcon("images/donateQuote.jpg"));
         quoteImageLabel.setBounds(0, 0, 400, 400); // Adjust the position and size as needed
         imgPanel.add(quoteImageLabel); // Add the label to the imgPanel
+        
+        JButton backBtn = new JButton("Back");
+        backBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if(e.getSource() == backBtn) {
+        			dispose();
+        		}
+        	}
+        });
+        backBtn.setFont(new Font("Tahoma", Font.BOLD, 15));
+        backBtn.setBounds(40, 10, 85, 54);
+        getContentPane().add(backBtn);
 
         // Add an ActionListener to the "Donate" button
         btnDonate.addActionListener(new ActionListener() {
@@ -233,7 +243,7 @@ public class Donate extends JFrame {
                     connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
                     // Create an SQL INSERT statement
-                    String sql = "INSERT INTO donorlist (Name, City, Address, Email, BloodType, Contact) VALUES (?, ?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO donor (donor_name, City, Address, Email, blood_Type, dr_contact) VALUES (?, ?, ?, ?, ?, ?)";
 
                     // Prepare the SQL statement
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
