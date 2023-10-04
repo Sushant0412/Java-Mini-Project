@@ -100,7 +100,7 @@ public class AboutUs extends JFrame {
         });
         btnBack.setFont(new Font("Tahoma", Font.BOLD, 10));
         btnBack.setBackground(new Color(255, 255, 255));
-        btnBack.setBounds(45, 17, 85, 21);
+        btnBack.setBounds(45, 10, 85, 28);
         contentPane.add(btnBack);
         
     }
