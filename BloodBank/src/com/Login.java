@@ -59,7 +59,7 @@ public class Login implements ActionListener{
 		panel.setLayout(null);
 		
 		JTextArea username = new JTextArea();
-		username.setBorder(null);
+		username.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		username.setBounds(22, 39, 118, 22);
 		panel.add(username);
 		
@@ -88,7 +88,7 @@ public class Login implements ActionListener{
 		passLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		passwordField = new JPasswordField();
-		passwordField.setBorder(null);
+		passwordField.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		passwordField.setBounds(22, 118, 118, 26);
 		panel.add(passwordField);
 		
