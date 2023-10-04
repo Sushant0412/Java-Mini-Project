@@ -40,7 +40,8 @@ public class Home extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(0, 64, 128));
+		contentPane.setBorder(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -49,7 +50,7 @@ public class Home extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 128, 64));
-		panel.setBorder(new EmptyBorder(0, 3, 0, 0));
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBounds(10, 10, 766, 84);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -166,7 +167,7 @@ public class Home extends JFrame {
 		
 		JPanel tablePanel = new JPanel();
 		tablePanel.setBackground(new Color(128, 64, 0));
-		tablePanel.setBounds(324, 118, 452, 412);
+		tablePanel.setBounds(388, 118, 388, 412);
 		contentPane.add(tablePanel);
 		
 		// Create a DefaultTableModel for the table
@@ -202,7 +203,12 @@ public class Home extends JFrame {
                         
         // Create the JTable using the table model
         JTable table = new JTable(tableModel);
+        table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12)); // Make column headers bold
                                 
+        table.setGridColor(Color.BLACK);
+        table.setShowGrid(true);
+        table.setIntercellSpacing(new Dimension(2, 2)); // Adjust the spacing to make the lines thicker
+        
         // Add the table to a JScrollPane for scrolling
         table.setFillsViewportHeight(true);
 
@@ -216,8 +222,27 @@ public class Home extends JFrame {
 
         // Add the scrollPane (containing the table) to the CENTER of the tablePanel
         tablePanel.add(scrollPane, BorderLayout.CENTER);
-
 		
+        JPanel quotePanel = new JPanel();
+        quotePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+        quotePanel.setBackground(new Color(255, 255, 255));
+        quotePanel.setBounds(10, 118, 368, 412);
+        contentPane.add(quotePanel);
+
+        // Load and display the image on the quote panel
+        try {
+            ImageIcon quoteIcon = new ImageIcon(getClass().getResource("Quote.jpg")); // Update the path accordingly
+            Image scaledQuote = quoteIcon.getImage().getScaledInstance(quotePanel.getWidth(), quotePanel.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon scaledQuoteIcon = new ImageIcon(scaledQuote);
+
+            // Create a JLabel to display the scaled image
+            JLabel quoteLabel = new JLabel(scaledQuoteIcon);
+            quotePanel.add(quoteLabel);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        
 	}
 
 	protected void loginSrc() {
