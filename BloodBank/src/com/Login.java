@@ -27,7 +27,7 @@ public class Login implements ActionListener{
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
@@ -42,7 +42,6 @@ public class Login implements ActionListener{
 	
 	private void initialize()  {
 		  
-		
 		frame = new JFrame();
 		frame.setTitle("Login Page");
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
@@ -53,6 +52,7 @@ public class Login implements ActionListener{
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(213, 213, 213));
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setBounds(540, 122, 203, 280);
 		frame.getContentPane().add(panel);
@@ -104,10 +104,10 @@ public class Login implements ActionListener{
 					String pwdText = passwordField.getText(); // Retrieve the entered password
 
 			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
-			            //JOptionPane.showMessageDialog(null, "Login Successful");
+			            JOptionPane.showMessageDialog(null, "Login Successful");
+			            frame.setVisible(false);
 			            Home launch = new Home();
 			            launch.setVisible(true);
-			            frame.setVisible(false);
 			        } else if(userText.equals("") || pwdText.equals("")){
 			        	JOptionPane.showMessageDialog(null, "Please Enter username and password");
 			        	username.setText("");
