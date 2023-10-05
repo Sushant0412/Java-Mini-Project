@@ -219,7 +219,8 @@ public class Donate extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		if(e.getSource() == backBtn) {
         			dispose();
-        		}
+        			Home launch = new Home();
+        			launch.setVisible(true);        		}
         	}
         });
         backBtn.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -258,7 +259,15 @@ public class Donate extends JFrame {
                     int rowsInserted = preparedStatement.executeUpdate();
 
                     if (rowsInserted > 0) {
-                        JOptionPane.showMessageDialog(null, "Donation data inserted successfully.");
+                    	JOptionPane.showMessageDialog(null, "Donation data inserted successfully.");
+
+                        // Clear input fields and reset choice boxes
+                        textFieldName.setText("");
+                        textAddress.setText("");
+                        txtEmail.setText("");
+                        bldTypeChoice.select(0); // Reset the choice box to the default value
+                        txtContact.setText("");
+                        cityChoice.select(0); // Reset the choice box to the default value
                     } else {
                         JOptionPane.showMessageDialog(null, "Data insertion failed.");
                     }
