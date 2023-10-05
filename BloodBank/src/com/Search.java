@@ -1,144 +1,259 @@
 package com;
 
-
 import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
 
-public class Login implements ActionListener{
+public class Search extends JFrame {
 
-	public JFrame frame;
-	public JPasswordField passwordField;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField title;
+    private JTextField txtEnterCity;
+    private Choice cityChoice;
+    private Choice bloodTypeChoice;
+    private JTextField txtBloodType;
 
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	/**
-	 * Create the application.
-	 */
-	public Login() {
-		initialize();
-	}
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Search frame = new Search();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	
-	
-	private void initialize()  {
-		  
-		frame = new JFrame();
-		frame.setTitle("Login Page");
-		frame.getContentPane().setForeground(new Color(0, 0, 0));
-		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.getContentPane().setLayout(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(213, 213, 213));
-		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panel.setBounds(540, 122, 203, 280);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JTextArea username = new JTextArea();
-		username.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		username.setBounds(22, 39, 118, 22);
-		panel.add(username);
-		
-		ImageIcon backgroundImage = new ImageIcon("images/loginBg.jpg"); // Replace with your image path
-		JLabel backgroundLabel = new JLabel(backgroundImage);
-		backgroundLabel.setBorder(null);
-		backgroundLabel.setBounds(0, 0, 786, 563); // Set the size to match your frame size
-		frame.getContentPane().add(backgroundLabel);
+    public Search() {
 
-		JLabel titleLabel = new JLabel("Blood Bank Management System");
-        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
-        titleLabel.setForeground(new Color(0, 0, 0)); // Set the text color
-        titleLabel.setBounds(50, 50, 500, 40); // Adjust position and size as needed
-        backgroundLabel.add(titleLabel); // Add to the background label
-		
-		JLabel usernameLabel = new JLabel("UserName");
-		usernameLabel.setBounds(22, 10, 80, 19);
-		panel.add(usernameLabel);
-		usernameLabel.setForeground(new Color(0, 0, 0));
-		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-		
-		JLabel passLabel = new JLabel("Password");
-		passLabel.setBounds(22, 82, 80, 26);
-		panel.add(passLabel);
-		passLabel.setForeground(new Color(0, 0, 0));
-		passLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-		
-		passwordField = new JPasswordField();
-		passwordField.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		passwordField.setBounds(22, 118, 118, 26);
-		panel.add(passwordField);
-		
-		JButton loginbtn = new JButton("LOGIN");
-		loginbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			    if (e.getSource() == loginbtn) {
-			    	//Home launch = new Home();
-		            //launch.setVisible(true);
-		            //frame.setVisible(false);
-			        String userText = username.getText(); // Retrieve the entered username
-			        @SuppressWarnings("deprecation")
-					String pwdText = passwordField.getText(); // Retrieve the entered password
+        class AddressCellRenderer extends DefaultTableCellRenderer {
+            private static final long serialVersionUID = 1L;
 
-			        if (userText.equalsIgnoreCase("admin") && pwdText.equals("12345")) {
-			            JOptionPane.showMessageDialog(null, "Login Successful");
-			            frame.setVisible(false);
-			            Home launch = new Home();
-			            launch.setVisible(true);
-			        } else if(userText.equals("") || pwdText.equals("")){
-			        	JOptionPane.showMessageDialog(null, "Please Enter username and password");
-			        	username.setText("");
-			            passwordField.setText("");
-			        }
-			        else {
-			            JOptionPane.showMessageDialog(null, "Invalid Username or Password");
-			            username.setText("");
-			            passwordField.setText("");
-			        }
-			    }
-			}
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                if (column == 3) { // Replace 3 with the actual column index of the "Address" column
+                    JTextArea textArea = new JTextArea();
+                    textArea.setWrapStyleWord(true);
+                    textArea.setLineWrap(true);
+                    textArea.setFont(new Font("Tahoma", Font.PLAIN, 12)); // Adjust the font size and style as needed
+                    textArea.setText((String) value);
 
-		});
-		loginbtn.setActionCommand("Home");
-		loginbtn.setBounds(22, 174, 103, 35);
-		panel.add(loginbtn);
-		loginbtn.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		loginbtn.setForeground(new Color(0, 0, 0));
-		loginbtn.setBackground(new Color(255, 255, 0));
-	}
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+                    // Set the preferred size for the JScrollPane to enable scrolling
+                    scrollPane.setPreferredSize(new Dimension(200, 50)); // Adjust the width and height as needed
 
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		frame.setVisible(true);
-		
-	}
+                    return scrollPane;
+                } else {
+                    return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                }
+            }
+        }
+
+        
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 1200, 600);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(128, 128, 128));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setResizable(false);
+
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setBounds(10, 10, 1166, 543);
+        panel.setBackground(new Color(255, 0, 0));
+        panel.setForeground(new Color(255, 255, 255));
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        JPanel searchHeading = new JPanel();
+        searchHeading.setBackground(new Color(192, 192, 192));
+        searchHeading.setBounds(10, 158, 218, 39);
+        panel.add(searchHeading);
+        searchHeading.setLayout(null);
+        
+        JLabel lblSearchBlood = new JLabel("Search Blood Stock");
+        lblSearchBlood.setBounds(0, 0, 218, 39);
+        searchHeading.add(lblSearchBlood);
+        lblSearchBlood.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSearchBlood.setFont(new Font("Tahoma", Font.BOLD, 15));
+
+        cityChoice = new Choice();
+        cityChoice.setBounds(111, 227, 104, 18);
+        cityChoice.add("Select City");
+        cityChoice.add("Kurla");
+        cityChoice.add("Chembur");
+        cityChoice.add("Sion");
+        cityChoice.add("Thane");
+        cityChoice.add("Kalyan");
+        cityChoice.add("Dadar");
+        cityChoice.add("Vashi");
+        cityChoice.setForeground(Color.BLACK);
+        panel.add(cityChoice);
+
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Name");
+        tableModel.addColumn("Blood Type");
+        tableModel.addColumn("Address");
+        tableModel.addColumn("Contact");
+        tableModel.addColumn("Age");
+       
+
+        JTable jTable = new JTable(tableModel) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Make all cells non-editable
+                return false;
+            }
+        };
+        
+        
+
+        // Set the custom cell renderer for the "Address" column
+        TableColumn addressColumn = jTable.getColumnModel().getColumn(3); // Replace 3 with the actual column index of the "Address" column
+        addressColumn.setCellRenderer(new AddressCellRenderer());
+
+        
+
+        jTable.setFont(new Font("Tahoma", Font.BOLD, 15));
+        addressColumn.setPreferredWidth(200); // Adjust the width as needed
+        jTable.setRowHeight(60);
+
+        JScrollPane scrollPane = new JScrollPane(jTable);
+        scrollPane.setBounds(252, 158, 904, 375);
+        panel.add(scrollPane);
+
+        txtEnterCity = new JTextField();
+        txtEnterCity.setBounds(10, 226, 96, 19);
+        txtEnterCity.setFont(new Font("Tahoma", Font.BOLD, 15));
+        txtEnterCity.setBorder(new CompoundBorder());
+        txtEnterCity.setBackground(new Color(255, 0, 0));
+        txtEnterCity.setText("Enter City:");
+        panel.add(txtEnterCity);
+        txtEnterCity.setColumns(10);
+
+        JButton enterButton = new JButton("Enter");
+        enterButton.setBounds(71, 310, 85, 21);
+        enterButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String selectedCity = cityChoice.getSelectedItem();
+                    String selectedBloodType = bloodTypeChoice.getSelectedItem();
+
+                    if ("Select City".equals(selectedCity) || "Select Type".equals(selectedBloodType)) {
+                        JOptionPane.showMessageDialog(contentPane, "Please select both City and Blood Type.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        // Reset both input fields to their default values
+                        cityChoice.select(0);
+                        bloodTypeChoice.select(0);
+                        return;
+                    }
+
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/bloodbank", "root",
+                            "root");
+
+                    String query = "SELECT *, TIMESTAMPDIFF(YEAR, DOB, CURDATE()) AS Age FROM donor WHERE City = ? AND blood_Type = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setString(1, selectedCity);
+                    preparedStatement.setString(2, selectedBloodType);
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    boolean foundEntries = false;
+                    
+                    tableModel.setRowCount(0);
+
+                    while (resultSet.next()) {
+                        String address = resultSet.getString("Address");
+                        String id = resultSet.getString("donor_id");
+                        String bloodType = resultSet.getString("blood_Type");
+                        String name = resultSet.getString("donor_name");
+                        String contact = resultSet.getString("dr_contact");
+                        int age = resultSet.getInt("Age"); // Retrieve the calculated age
+   
+                        tableModel.addRow(new Object[] { id, name, bloodType, address, contact, age });
+                        foundEntries = true;
+
+                    }
+
+                    resultSet.close();
+                    preparedStatement.close();
+                    connection.close();
+
+                    if (!foundEntries) {
+                        JOptionPane.showMessageDialog(contentPane, "No entries found for the selected blood type.",
+                                "No Entries Found", JOptionPane.INFORMATION_MESSAGE);
+                        cityChoice.select(0);
+                        bloodTypeChoice.select(0);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }  
+        });
+        
+        enterButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+        panel.add(enterButton);
+
+        title = new JTextField();
+        title.setBackground(new Color(192, 192, 192));
+        title.setBounds(252, 37, 904, 62);
+        panel.add(title);
+        title.setFont(new Font("Tahoma", Font.BOLD, 15));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setText("Blood Stock Availability");
+        title.setColumns(10);
+
+        bloodTypeChoice = new Choice();
+        bloodTypeChoice.setBounds(111, 269, 104, 18);
+        bloodTypeChoice.add("Select Type");
+        bloodTypeChoice.add("A+");
+        bloodTypeChoice.add("B+");
+        bloodTypeChoice.add("AB+");
+        bloodTypeChoice.add("O+");
+        bloodTypeChoice.add("A-");
+        bloodTypeChoice.add("B-");
+        bloodTypeChoice.add("AB-");
+        bloodTypeChoice.add("O-");
+        bloodTypeChoice.setForeground(Color.BLACK);
+        panel.add(bloodTypeChoice);
+
+        txtBloodType = new JTextField();
+        txtBloodType.setBounds(10, 269, 96, 19);
+        txtBloodType.setText("Blood Type:");
+        txtBloodType.setFont(new Font("Tahoma", Font.BOLD, 15));
+        txtBloodType.setColumns(10);
+        txtBloodType.setBorder(new CompoundBorder());
+        txtBloodType.setBackground(Color.RED);
+        panel.add(txtBloodType);
+        
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if(e.getSource() == backButton) {
+        			dispose();
+        			Home launch = new Home();
+        			launch.setVisible(true);
+        		}
+        	}
+        });
+        backButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+        backButton.setBounds(58, 47, 98, 40);
+        panel.add(backButton);
+    }
 }
