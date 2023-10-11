@@ -17,10 +17,11 @@ public class Donate extends JFrame {
     private Image backgroundImage;
     private Choice bldTypeChoice;
     private JTextField txtContact;
+    private JTextField txtDOB;
 
     // Database connection variables
     private Connection connection = null;
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/bloodbank";
+    private static final String DB_URL = "jdbc:mysql://localhost:3310/bloodbank";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
 
@@ -48,7 +49,7 @@ public class Donate extends JFrame {
 
         JPanel enterDetail = new JPanel();
         enterDetail.setBackground(new Color(192, 192, 192)); // 0 for fully transparent
-        enterDetail.setBounds(40, 108, 276, 402);
+        enterDetail.setBounds(40, 108, 276, 428);
         getContentPane().add(enterDetail);
         enterDetail.setLayout(null);
 
@@ -83,17 +84,18 @@ public class Donate extends JFrame {
         textFieldName.setBounds(91, 30, 159, 25);
         enterDetail.add(textFieldName);
         textFieldName.setColumns(10);
-
+        JScrollPane scrollPane = new JScrollPane(); // Add a scroll pane
+        scrollPane.setBounds(91, 110, 159, 64);
+        enterDetail.add(scrollPane); // Add the scroll pane to the panel
+        
         textAddress = new JTextArea();
+        scrollPane.setViewportView(textAddress);
         textAddress.setLineWrap(true); // Enable text wrapping
         textAddress.setWrapStyleWord(true); // Wrap at word boundaries
-        JScrollPane scrollPane = new JScrollPane(textAddress); // Add a scroll pane
-        scrollPane.setBounds(91, 130, 159, 60);
-        enterDetail.add(scrollPane); // Add the scroll pane to the panel
 
         JLabel lblCity = new JLabel("Address:");
         lblCity.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblCity.setBounds(20, 145, 57, 35);
+        lblCity.setBounds(20, 123, 57, 35);
         enterDetail.add(lblCity);
 
         JLabel lblEmail = new JLabel("Email:");
@@ -107,6 +109,18 @@ public class Donate extends JFrame {
         enterDetail.add(txtEmail);
         txtEmail.setColumns(10);
 
+        JLabel lblDOB = new JLabel("Date of Birth:");
+        lblDOB.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblDOB.setBounds(20, 188, 115, 20);
+        enterDetail.add(lblDOB);
+
+        txtDOB = new JTextField();
+        txtDOB.setBorder(new EmptyBorder(0, 0, 0, 0));
+        txtDOB.setBounds(137, 188, 113, 25);
+        enterDetail.add(txtDOB);
+        txtDOB.setColumns(10);
+
+        
         bldTypeChoice = new Choice();
         bldTypeChoice.setSize(127, 18);
         bldTypeChoice.setLocation(123, 275);
@@ -238,13 +252,14 @@ public class Donate extends JFrame {
                 String bloodType = bldTypeChoice.getSelectedItem();
                 String contact = txtContact.getText();
                 String city = cityChoice.getSelectedItem();
-
+                String dob = txtDOB.getText();
+                
                 try {
                     // Establish a database connection
                     connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
                     // Create an SQL INSERT statement
-                    String sql = "INSERT INTO donor (donor_name, City, Address, Email, blood_Type, dr_contact) VALUES (?, ?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO donor (donor_name, City, Address, Email, blood_Type, dr_contact, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                     // Prepare the SQL statement
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -254,6 +269,7 @@ public class Donate extends JFrame {
                     preparedStatement.setString(4, email);
                     preparedStatement.setString(5, bloodType);
                     preparedStatement.setString(6, contact);
+                    preparedStatement.setString(7, dob);
 
                     // Execute the SQL statement to insert the data
                     int rowsInserted = preparedStatement.executeUpdate();
@@ -268,6 +284,8 @@ public class Donate extends JFrame {
                         bldTypeChoice.select(0); // Reset the choice box to the default value
                         txtContact.setText("");
                         cityChoice.select(0); // Reset the choice box to the default value
+                        txtDOB.setText("");
+                        
                     } else {
                         JOptionPane.showMessageDialog(null, "Data insertion failed.");
                     }
