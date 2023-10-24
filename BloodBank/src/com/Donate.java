@@ -1,8 +1,11 @@
 package com;
 
 import java.awt.*;
+import java.util.*;
+import java.text.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.sql.Date;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -114,11 +117,34 @@ public class Donate extends JFrame {
         lblDOB.setBounds(20, 188, 115, 20);
         enterDetail.add(lblDOB);
 
+     // Create a JTextField for DOB with placeholder
         txtDOB = new JTextField();
         txtDOB.setBorder(new EmptyBorder(0, 0, 0, 0));
         txtDOB.setBounds(137, 188, 113, 25);
+        txtDOB.setForeground(Color.GRAY); // Set text color to gray
+        txtDOB.setText("YYYY-MM-dd"); // Placeholder text
         enterDetail.add(txtDOB);
         txtDOB.setColumns(10);
+
+        // Add a focus listener to handle the placeholder text
+        txtDOB.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtDOB.getText().equals("YYYY-MM-dd")) {
+                    txtDOB.setText("");
+                    txtDOB.setForeground(Color.BLACK); // Change text color to black when the field is focused
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtDOB.getText().isEmpty()) {
+                    txtDOB.setText("yyyy-MM-dd");
+                    txtDOB.setForeground(Color.GRAY); // Change text color back to gray when there's no input
+                }
+            }
+        });
+
 
         
         bldTypeChoice = new Choice();
@@ -254,53 +280,77 @@ public class Donate extends JFrame {
                 String city = cityChoice.getSelectedItem();
                 String dob = txtDOB.getText();
                 
+                if (name.isEmpty() || address.isEmpty() || email.isEmpty() || dob.isEmpty() || bloodType.equals("Select Type") || contact.isEmpty() || city.equals("Select City")) {
+                    JOptionPane.showMessageDialog(null, "Please enter all the details.", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    // Establish a database connection
-                    connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                	java.sql.Date birthDate = new java.sql.Date(dateFormat.parse(dob).getTime());
+                    Calendar dobCalendar = Calendar.getInstance();
+                    dobCalendar.setTime(birthDate);
 
-                    // Create an SQL INSERT statement
-                    String sql = "INSERT INTO donor (donor_name, City, Address, Email, blood_Type, dr_contact, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    Calendar currentCalendar = Calendar.getInstance();
+                    int age = currentCalendar.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR);
 
-                    // Prepare the SQL statement
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                    preparedStatement.setString(1, name);
-                    preparedStatement.setString(2, city);
-                    preparedStatement.setString(3, address);
-                    preparedStatement.setString(4, email);
-                    preparedStatement.setString(5, bloodType);
-                    preparedStatement.setString(6, contact);
-                    preparedStatement.setString(7, dob);
-
-                    // Execute the SQL statement to insert the data
-                    int rowsInserted = preparedStatement.executeUpdate();
-
-                    if (rowsInserted > 0) {
-                    	JOptionPane.showMessageDialog(null, "Donation data inserted successfully.");
-
-                        // Clear input fields and reset choice boxes
-                        textFieldName.setText("");
-                        textAddress.setText("");
-                        txtEmail.setText("");
-                        bldTypeChoice.select(0); // Reset the choice box to the default value
-                        txtContact.setText("");
-                        cityChoice.select(0); // Reset the choice box to the default value
-                        txtDOB.setText("");
-                        
+                    // If the user is under 18, show an error message
+                    if (age < 18) {
+                        JOptionPane.showMessageDialog(null, "Sorry, you are not eligible to donate blood as you are under 18 years old.");
                     } else {
-                        JOptionPane.showMessageDialog(null, "Data insertion failed.");
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    try {
-                        if (connection != null) {
-                            connection.close();
+                        // Continue with the database insertion
+                        try {
+                            // Establish a database connection
+                            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+                            // Create an SQL INSERT statement
+                            String sql = "INSERT INTO donor (donor_name, City, Address, Email, blood_Type, dr_contact, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+                            // Prepare the SQL statement
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                            preparedStatement.setString(1, name);
+                            preparedStatement.setString(2, city);
+                            preparedStatement.setString(3, address);
+                            preparedStatement.setString(4, email);
+                            preparedStatement.setString(5, bloodType);
+                            preparedStatement.setString(6, contact);
+                            preparedStatement.setDate(7, birthDate);
+
+                            // Execute the SQL statement to insert the data
+                            int rowsInserted = preparedStatement.executeUpdate();
+
+                            if (rowsInserted > 0) {
+                                JOptionPane.showMessageDialog(null, "Donation data inserted successfully.");
+
+                                // Clear input fields and reset choice boxes
+                                textFieldName.setText("");
+                                textAddress.setText("");
+                                txtEmail.setText("");
+                                bldTypeChoice.select(0); // Reset the choice box to the default value
+                                txtContact.setText("");
+                                cityChoice.select(0); // Reset the choice box to the default value
+                                txtDOB.setText("YYYY-MM-dd");
+                                txtDOB.setForeground(Color.GRAY);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Data insertion failed.");
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        } finally {
+                            try {
+                                if (connection != null) {
+                                    connection.close();
+                                }
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
                         }
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
                     }
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Invalid date of birth format. Please use yyyy-MM-dd format.");
+                }
                 }
             }
         });
+
     }
 }
