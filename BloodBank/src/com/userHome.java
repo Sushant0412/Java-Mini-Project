@@ -74,7 +74,7 @@ public class userHome extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnFind) {
 					dispose();
-					Search find = new Search();
+					userSearch find = new userSearch();
 					find.setVisible(true);
 				}
 			}
@@ -121,7 +121,7 @@ public class userHome extends JFrame {
 				if(e.getSource() == btnAboutUs)
 				{
 					dispose();
-					AboutUs aboutUsFrame = new AboutUs();
+					userAboutUs aboutUsFrame = new userAboutUs();
                     aboutUsFrame.setVisible(true);
 				}
 			}
@@ -184,7 +184,7 @@ public class userHome extends JFrame {
         // Create the JTable using the table model
         JTable table = new JTable(tableModel);
         table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12)); // Make column headers bold
-                                
+        table.setEnabled(false);       
         table.setGridColor(Color.BLACK);
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(2, 2)); // Adjust the spacing to make the lines thicker
