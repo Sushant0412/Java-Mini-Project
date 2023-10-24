@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -139,7 +140,7 @@ public class Search extends JFrame {
         lblSearchBlood.setHorizontalAlignment(SwingConstants.CENTER);
         lblSearchBlood.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-        String[] cityOptions = {"Select City", "Kurla", "Chembur", "Sion", "Thane", "Kalyan", "Dadar", "Vashi"};
+        String[] cityOptions = {"", "Kurla", "Chembur", "Sion", "Thane", "Kalyan", "Dadar", "Vashi"};
         cityChoice = new JComboBox<>(cityOptions);
         cityChoice.setEditable(true); // Allow user input
         setupAutoComplete(cityChoice, cityOptions);
@@ -154,6 +155,7 @@ public class Search extends JFrame {
         tableModel.addColumn("Address");
         tableModel.addColumn("Contact");
         tableModel.addColumn("Age");
+        tableModel.addColumn("Expiry Date");
 
         JTable jTable = new JTable(tableModel) {
             private static final long serialVersionUID = 1L;
@@ -165,6 +167,8 @@ public class Search extends JFrame {
         };
 
         TableColumn addressColumn = jTable.getColumnModel().getColumn(3);
+        TableColumn expiryDateColumn = jTable.getColumnModel().getColumn(2); // Adjust the column index accordingly
+        expiryDateColumn.setPreferredWidth(100);
         addressColumn.setCellRenderer(new AddressCellRenderer());
 
         jTable.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -203,7 +207,11 @@ public class Search extends JFrame {
                     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3310/bloodbank?useSSL=false&allowPublicKeyRetrieval=true", "root",
                             "root");
 
-                    String query = "SELECT *, TIMESTAMPDIFF(YEAR, DOB, CURDATE()) AS Age FROM donor WHERE City = ? AND blood_Type = ?";
+                    String query = "SELECT d.*, b.*, TIMESTAMPDIFF(YEAR, d.DOB, CURDATE()) AS Age, b.date_of_exp " +
+                            "FROM donor AS d " +
+                            "INNER JOIN blood AS b ON d.donor_id = b.donor_id " +
+                            "WHERE d.City = ? AND b.blood_Type = ?";
+
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setString(1, selectedCity);
                     preparedStatement.setString(2, selectedBloodType);
@@ -221,8 +229,28 @@ public class Search extends JFrame {
                         String name = resultSet.getString("donor_name");
                         String contact = resultSet.getString("dr_contact");
                         int age = resultSet.getInt("Age");
+                        Date expiryDate = resultSet.getDate("date_of_exp");
+                       
+                        
+                        Calendar cal = Calendar.getInstance();
+                        cal.add(Calendar.DAY_OF_YEAR, 1);
+                        Date nextDay = (Date) cal.getTime();
 
-                        tableModel.addRow(new Object[]{id, name, bloodType, address, contact, age});
+                        if (expiryDate.equals(nextDay)) {
+                            // Notify the user about next day expiry
+                            JOptionPane.showMessageDialog(contentPane, "Donor " + name + " will expire tomorrow.", "Expiry Alert", JOptionPane.WARNING_MESSAGE);
+                        } else if (expiryDate.before(nextDay)) {
+                            // Entry has already expired, delete it
+                            int rowToDelete = jTable.getSelectedRow();
+                            tableModel.removeRow(rowToDelete);
+                            // Notify the user about deletion
+                            JOptionPane.showMessageDialog(contentPane, "Donor " + name + " has been deleted due to expired date.", "Deletion Alert", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            // Add the row to the table
+                            tableModel.addRow(new Object[]{id, name, bloodType, address, contact, age, expiryDate});
+                        }
+                        
+                        //tableModel.addRow(new Object[]{id, name, bloodType, address, contact, age, expiryDate});
                         foundEntries = true;
                     }
 
@@ -254,7 +282,7 @@ public class Search extends JFrame {
         title.setText("Blood Stock Availability");
         title.setColumns(10);
 
-        String[] bloodTypeOptions = {"Select Type", "A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"};
+        String[] bloodTypeOptions = {"", "A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"};
         bloodTypeChoice = new JComboBox<>(bloodTypeOptions);
         bloodTypeChoice.setEditable(true);
         setupAutoComplete(bloodTypeChoice, bloodTypeOptions);
