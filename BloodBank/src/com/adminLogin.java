@@ -7,7 +7,7 @@ import javax.swing.border.*;
 
 public class adminLogin {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField usernameTextField;
 	private JPasswordField passwordField;
 
@@ -155,6 +155,13 @@ public class adminLogin {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel.setBounds(60, 28, 110, 13);
 		panel.add(lblNewLabel);
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		adminLogin test = new adminLogin();
+		test.setVisible(b);
+		
 	}
 
 }
