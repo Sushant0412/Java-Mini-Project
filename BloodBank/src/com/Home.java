@@ -206,7 +206,7 @@ public class Home extends JFrame {
         // Create the JTable using the table model
         JTable table = new JTable(tableModel);
         table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12)); // Make column headers bold
-                                
+        table.setEnabled(false);                                
         table.setGridColor(Color.BLACK);
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(2, 2)); // Adjust the spacing to make the lines thicker
