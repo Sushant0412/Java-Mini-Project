@@ -38,7 +38,7 @@ public class Welcome {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(0, 0, 1011, 782);
+		frame.setBounds(250, 30, 1011, 782);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -75,14 +75,15 @@ public class Welcome {
 		
 		JButton btnAdmin = new JButton("Admin");
 		btnAdmin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == btnAdmin) {
-					frame.dispose();
-					Login start = new Login();
-					start.setVisible(true);
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (e.getSource() == btnAdmin) {
+		            frame.dispose();
+		            adminLogin start = new adminLogin();
+		            start.frame.setVisible(true);
+		        }
+		    }
 		});
+
 		btnAdmin.setForeground(new Color(255, 0, 0));
 		btnAdmin.setBackground(new Color(255, 255, 0));
 		btnAdmin.setBorder(new LineBorder(new Color(0, 0, 0), 2));
